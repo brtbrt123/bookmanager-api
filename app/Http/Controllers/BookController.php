@@ -33,4 +33,27 @@ class BookController extends Controller
         }
         return response()->json($book, 200);
     }
+    // Update book
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'genre' => 'required|string|max:255',
+        ]);
+
+        $book = Book::findOrFail($id);
+        $book->update($validated);
+
+        return response()->json($book);
+    }
+
+    // Delete book
+    public function destroy($id)
+    {
+        $book = Book::findOrFail($id);
+        $book->delete();
+
+        return response()->json(['message' => 'Book deleted successfully']);
+    }
 }
